@@ -9,15 +9,10 @@
             <tr>
                 <td>
                     <h6>Coupon Discount</h6>
-                    <div v-if="couponStore">
-                        <p>{{ }}</p>
-                    </div>
                     <!-- Button trigger modal -->
-                    <div v-if="!discount_store.loadDiscountLocalStorage('coupon')">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Coupon Discount
-                        </button>
-                    </div>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Coupon Discount
+                    </button>
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
@@ -157,12 +152,6 @@ const SeasonalDiscount = findDiscount(5)
 function findDiscount(id) {
     return discountData.find(value => value.id === id)
 }
-const couponStore = discount_store.loadDiscountLocalStorage('coupon')
-const onTopStore = discount_store.loadDiscountLocalStorage('on Top')
-const seasonalStore = discount_store.loadDiscountLocalStorage('Seasonal')
 
-const coupon = couponStore.map(value => { value })
-const couponData = coupon.forEach(value => {  })
-console.log(couponData)
 </script>
 <style lang="scss" scoped></style>
