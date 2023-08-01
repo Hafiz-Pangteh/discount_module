@@ -1,5 +1,6 @@
 <template>
     <h1>Shopping Cart</h1>
+    <p> Your point is:{{ point }}</p>
     <div class="row">
         <div class="col-9 mt-3">
             <table class="table">
@@ -47,6 +48,7 @@ import priceInterface from './price.vue';
 
 const cart_store = useCartStore();
 const carts = computed(() => cart_store.cart_preview)
+const point = computed(() => cart_store.userPoint)
 </script>
  
 <style lang="scss" scoped></style>

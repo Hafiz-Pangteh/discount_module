@@ -108,10 +108,21 @@ export const useCartStore = defineStore('useCartStore', () => {
         point = quantity * 20;
         return point;
     }
+    const userPoint = computed(() => {
+        let point = 0;
+        let quantity = 0;
+        const getProduct = loadFromLocalStorage()
+        const product = getProduct.map(value => value)
+        const getQuantity = product.forEach(value => {
+            quantity += value.quantity
+        })
+        point = quantity * 20;
+        return point;
+    })
 
 
 
 
 
-    return { add_cart, loadFromLocalStorage, cart, cart_preview, increare_quantity, decreare_quantity, remove_cart, totalPrice, point }
+    return { add_cart, loadFromLocalStorage, cart, cart_preview, increare_quantity, decreare_quantity, remove_cart, totalPrice, point, userPoint }
 })
