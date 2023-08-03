@@ -9,59 +9,71 @@ export const usePriceStore = defineStore('usePriceStore', () => {
 
     const discount_store = useDiscountStore();
     const cart_store = useCartStore();
-    const carts = computed(() => cart_store.cart_preview)
-    //const couponDiscountPrice = getCouponDiscountPrice('coupon');
 
-
-    const getCouponDiscountPrice = (category) => {
-        const getDiscount = discount_store.loadDiscountLocalStorage(category);
-        const findDiscount = discountData.find(value => value.id === getDiscount[0].id)
-
-        if (findDiscount.id === 1) {
-            return findDiscount.amount.toFixed(2);
-        } else if (findDiscount.id === 2) {
-            const percentageDiscount = (cart_store.totalPrice * findDiscount.amount) / 100;
-            return percentageDiscount.toFixed(2)
-        }
+    const findDiscountFromData = (id) => {
+        return discountData.find(value => value.id === id)
     }
-    const getonTopDiscountPrice = (category) => {
-        const getDiscount = discount_store.loadDiscountLocalStorage(category);
-        const findDiscount = discountData.find(value => value.id === getDiscount[0].id);
-        const getShoppingCart = cart_store.loadFromLocalStorage();
-        const point = cart_store.point();
+
+    const getCouponDiscountPrice = computed(() => {
+        const getDiscount = discount_store.loadDiscountLocalStorage('coupon');
+        let discounPrice = 0;
+        if (getDiscount.length <1) {
+            discounPrice = 0;
+        } else {
+            const findDiscount = findDiscountFromData(getDiscount[0].id)
+
+            if (findDiscount.id === 1) {
+                discounPrice = findDiscount.amount;
+            } else if (findDiscount.id === 2) {
+                const percentageDiscount = (cart_store.totalPrice * findDiscount.amount) / 100;
+                discounPrice = percentageDiscount;
+            }
+        }
+        return discounPrice.toFixed(2)
+    })
+    const getonTopDiscountPrice = computed(() => {
         let price = 0;
-        if (findDiscount.id === 3) {
-            const jeweryProduct = getShoppingCart.map(value => value)
-            const jeweryPrice = jeweryProduct.forEach(value => {
-                if (value.category === 'jewelery') {
-                    price += (value.price * value.quantity)
-                }
+        let discountPrice = 0;
+        const getDiscount = discount_store.loadDiscountLocalStorage('on Top');
+        if (getDiscount.length < 1) {
+            discountPrice = 0;
+        } else {
+            const findDiscount = findDiscountFromData(getDiscount[0].id)
+            const getShoppingCart = cart_store.loadFromLocalStorage();
+            const point = cart_store.point();
 
-            })
-            const categoryDiscount = (price * findDiscount.amount) / 100;
-            return categoryDiscount.toFixed(2)
-        } else if (findDiscount.id === 4) {
-
-            const pointDiscount = point * findDiscount.amount;
-            return pointDiscount.toFixed(2)
+            if (findDiscount.id === 3) {
+                const jeweryProduct = getShoppingCart.map(value => value)
+                const jeweryPrice = jeweryProduct.forEach(value => {
+                    if (value.category === 'jewelery') {
+                        price += (value.price * value.quantity)
+                    }
+                })
+                discountPrice = (price * findDiscount.amount) / 100;
+            } else if (findDiscount.id === 4) {
+                discountPrice = point * findDiscount.amount;
+            }
         }
-    }
+        return discountPrice.toFixed(2)
 
-    const getSeasonalDiscountPrice = (category) => {
-        const getDiscount = discount_store.loadDiscountLocalStorage(category);
-        const findDiscount = discountData.find(value => value.id === getDiscount[0].id)
+    })
+
+    const getSeasonalDiscountPrice = computed(() => {
         let getPrice = cart_store.totalPrice;
         let discount = 0;
-        while (getPrice >= 200) {
-            discount += findDiscount.amount;
-            getPrice -= 200;
-
+        const getDiscount = discount_store.loadDiscountLocalStorage('Seasonal');
+        if (getDiscount.length < 1) {
+            discount = 0
+        } else {
+            const findDiscount = findDiscountFromData(getDiscount[0].id)
+            while (getPrice >= 200) {
+                discount += findDiscount.amount;
+                getPrice -= 200;
+            }
         }
         return discount.toFixed(2);
 
-    }
-
-
+    })
 
     return { getCouponDiscountPrice, getonTopDiscountPrice, getSeasonalDiscountPrice }
 })

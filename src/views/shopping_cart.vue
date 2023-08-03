@@ -34,7 +34,7 @@
             </table>
         </div>
         <div class="col-3 mt-3">
-            <discount />
+            <discountInterface />
             <priceInterface />
         </div>
     </div>
@@ -43,7 +43,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useCartStore } from '../store/cart';
-import discount from './discount.vue';
+import discountInterface from './discount.vue'
 import priceInterface from './price.vue';
 
 const cart_store = useCartStore();

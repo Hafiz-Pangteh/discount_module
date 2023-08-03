@@ -44,6 +44,8 @@
                                     <button type="button" class="btn btn-primary"
                                         @click="discount_store.add_discount(picked)">Save
                                         changes</button>
+                                    <button type="button" class="btn btn-danger"
+                                        @click="discount_store.remove_discount('coupon')">Remove discount</button>
                                 </div>
                             </div>
                         </div>
@@ -88,6 +90,8 @@
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                     <button type="button" class="btn btn-primary"
                                         @click="discount_store.add_discount(picked)">Save changes</button>
+                                    <button type="button" class="btn btn-danger"
+                                        @click="discount_store.remove_discount('on Top')">Remove discount</button>
                                 </div>
                             </div>
                         </div>
@@ -125,6 +129,8 @@
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                     <button type="button" class="btn btn-primary"
                                         @click="discount_store.add_discount(picked)">Save changes</button>
+                                    <button type="button" class="btn btn-danger"
+                                        @click="discount_store.remove_discount('Seasonal')">Remove discount</button>
                                 </div>
                             </div>
                         </div>

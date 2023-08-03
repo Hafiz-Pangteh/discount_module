@@ -4,23 +4,22 @@
     <p>Coupon discount:{{ couponDiscount }} $</p>
     <p>On top discount:{{ onTopDiscount }} $</p>
     <p>Seasonal discount:{{ seasonalDiscount }} $</p>
-    <p>Total price:{{ parseFloat(totalPrice).toFixed(2) }} $</p>
+    <p>Total price:{{ totalPrice.toFixed(2) }} $</p>
 </template>
 <script setup>
+import { computed } from 'vue';
 import { useCartStore } from '../store/cart';
-import { useDiscountStore } from '../store/discount_store';
 import { usePriceStore } from '../store/price_store';
 
 
 const cart_store = useCartStore();
-const discount_store = useDiscountStore();
 const price_store = usePriceStore();
 
 
 const subTotal = cart_store.totalPrice;
-const couponDiscount = price_store.getCouponDiscountPrice('coupon');
-const onTopDiscount = price_store.getonTopDiscountPrice('on Top');
-const seasonalDiscount = price_store.getSeasonalDiscountPrice('Seasonal');
-const totalPrice = subTotal - couponDiscount - onTopDiscount - seasonalDiscount;
+const couponDiscount = computed(() => price_store.getCouponDiscountPrice);
+const onTopDiscount = computed(() => price_store.getonTopDiscountPrice);
+const seasonalDiscount = computed(() => price_store.getSeasonalDiscountPrice);
+const totalPrice = computed(() => subTotal - couponDiscount.value - onTopDiscount.value - seasonalDiscount.value);
 </script>
 <style lang="scss" scoped></style>

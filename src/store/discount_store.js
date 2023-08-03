@@ -1,7 +1,5 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { useProductStore } from "./product";
-import { useCartStore } from "./cart";
 import discountData from "../data/discount";
 
 export const useDiscountStore = defineStore('useDiscount', () => {
@@ -25,19 +23,20 @@ export const useDiscountStore = defineStore('useDiscount', () => {
         }
     }
     const saveDiscountLocalStorage = (category) => {
-
         localStorage.setItem(`${category}`, JSON.stringify(discounts.value))
     }
     const loadDiscountLocalStorage = (category) => {
         if (localStorage.getItem(`${category}`)) {
             discounts.value = JSON.parse(localStorage.getItem(`${category}`))
-            return discounts.value.map((value,index)=>{
+            return discounts.value.map((value, index) => {
                 return value
             })
         }
     }
+    const remove_discount = (category) => {
+        discounts.value.splice(0)
+        saveDiscountLocalStorage(category)
+    }
 
-
-
-    return { add_discount, loadDiscountLocalStorage }
+    return { add_discount, loadDiscountLocalStorage, remove_discount }
 })
